@@ -1,10 +1,10 @@
 """
-PyQt5-Template
+QPortfolio
 
 Usage:
-  pyqt5_template [--debug]
-  pyqt5_template -h | --help
-  pyqt5_template -v | --version
+  qportfolio [--debug]
+  qportfolio -h | --help
+  qportfolio -v | --version
 
 
 Options:
@@ -22,7 +22,8 @@ from cached_property import cached_property
 from PyQt5.QtWidgets import QApplication
 from PyQt5.QtCore import QLibraryInfo, QLocale, QTranslator
 
-from main.mainwindow import MainWindow
+from app.mainwindow import MainWindow
+from app.db import db, create_tables
 
 
 # ─── CONTEXTO APP ───────────────────────────────────────────────────────────────
@@ -35,6 +36,7 @@ class ContextoApp:
         self.app = QApplication([])
         self.debug = args['--debug']
         signal(SIGINT, SIG_DFL)
+        create_tables()
 
     def run(self):
         self.window.showMaximized()
@@ -48,6 +50,10 @@ class ContextoApp:
     @cached_property
     def window(self):
         return MainWindow(self)
+    
+    @cached_property
+    def db(self):
+        return db
 
     @cached_property
     def app_language(self):
